@@ -1,0 +1,26 @@
+# Standalone Caddyfile for an MCP-only Oracle Linux 9 host.
+# Install with: setup.sh your-name.duckdns.org
+# Or set MCP_HOST and copy this file to /etc/caddy/Caddyfile.
+
+{$MCP_HOST} {
+	# icloud-mcp-route: Streamable HTTP for the iCloud connector.
+	# This path is public HTTPS only. The app checks Authorization: Bearer.
+	@icloud_mcp path /mcp/icloud /mcp/icloud/
+	handle @icloud_mcp {
+		redir /mcp/icloud/ /mcp/icloud 308
+		request_body {
+			max_size 4MiB
+		}
+		reverse_proxy 127.0.0.1:8092 {
+			flush_interval -1
+			transport http {
+				read_timeout 3m
+				write_timeout 3m
+			}
+		}
+	}
+
+	handle {
+		respond 404
+	}
+}

@@ -1,0 +1,9 @@
+[project]
+name = "icloud-mcp"
+version = "1.0.0"
+description = "Self-hosted MCP server for iCloud Mail, Calendar, Contacts, and Reminders"
+requires-python = ">=3.11"
+dependencies = ["mcp==2.3.0"]
+
+[tool.setuptools.packages.find]
+include = ["icloud_mcp*"]

@@ -1,0 +1,29 @@
+[Unit]
+Description=iCloud MCP server (Mail, Calendar, Contacts, Reminders; localhost only)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=icloudmcp
+Group=icloudmcp
+EnvironmentFile=/etc/icloud-mcp.env
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=PYTHONUNBUFFERED=1
+Environment=PYTHONPATH=/opt/icloud-mcp
+WorkingDirectory=/opt/icloud-mcp
+ExecStart=/opt/icloud-mcp/venv/bin/python -m icloud_mcp
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectKernelTunables=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+MemoryMax=512M
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target
